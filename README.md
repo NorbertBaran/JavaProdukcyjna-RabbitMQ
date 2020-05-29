@@ -1,6 +1,10 @@
-Task: create a command-line chat client, that will be listenoing for messages with user and content, and will be displaying them.
+Task: create an interactive command-line chat client, that will be listening for messages with user and content (see format below), and will be displaying them.
 Also, it should be able to send a chat message, that others can read it.
-JSON format of message: `{"user":"Arek","message":"Hello World!"}`
+Program should also be closeable by user (with some command, or CTRL+C shortcut).
+For messages exchange, Rabbit MQ should be used (see server details below).
+
+JSON format of message: `{"user":"Arek","message":"Hello World!"}`.
+
 
 Server is Rabbit MQ, free tier from www.cloudamqp.com.
 * HOST: `bear.rmq.cloudamqp.com`
