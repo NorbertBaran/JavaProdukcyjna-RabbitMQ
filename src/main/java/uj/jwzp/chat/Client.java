@@ -1,35 +1,26 @@
 package uj.jwzp.chat;
 
-import org.apache.commons.cli.*;
+import java.io.InputStream;
 import java.util.*;
 
 public class Client {
 
-    public static void argsInit(String[] args){
-        Options options=new Options();
-        Option nick=new Option("n", "nick", true, "Chat Nickname");
-        nick.setRequired(true);
-        options.addOption(nick);
+    public static void main(String[] args) throws Exception {
+        Rabbit chat=new Rabbit();
+        new Receiver(chat).start();
 
-        CommandLineParser parser=new DefaultParser();
-        HelpFormatter formatter=new HelpFormatter();
-        CommandLine cmd=null;
+        Scanner scanner=new Scanner(System.in);
+        String nick=new NickParser(args).getNick();
 
-        try {
-            cmd = parser.parse(options, args);
-        } catch (ParseException e) {
-            formatter.printHelp("utility-name", options);
-            System.exit(0);
-        }
         Properties properties=new Properties();
-        properties.setProperty("user.nick", cmd.getOptionValue("nick"));
-    }
-
-    public static void main(String[] args){
-        argsInit(args);
-
+        InputStream inputStream= Client.class.getResourceAsStream("rabbitmq.properties");
+        properties.load(inputStream);
+        inputStream.close();
+        System.out.println(properties.getProperty("user.nick"));
         while(true){
-
+            String message=scanner.nextLine();
+            Message toSend=new Message(nick, message);
+            chat.send(toSend);
         }
     }
 }
