@@ -14,7 +14,7 @@ public class Receiver extends Thread{
             try {
                 chat.receive();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

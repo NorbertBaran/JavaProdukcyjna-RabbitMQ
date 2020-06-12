@@ -1,26 +1,27 @@
 package uj.jwzp.chat;
 
-import java.io.InputStream;
+import org.apache.log4j.BasicConfigurator;
+
 import java.util.*;
 
 public class Client {
 
     public static void main(String[] args) throws Exception {
-        Rabbit chat=new Rabbit();
-        new Receiver(chat).start();
+        BasicConfigurator.configure();
+
+        Rabbit rabbit=new Rabbit();
+        new Receiver(rabbit).start();
 
         Scanner scanner=new Scanner(System.in);
         String nick=new NickParser(args).getNick();
 
-        Properties properties=new Properties();
-        InputStream inputStream= Client.class.getResourceAsStream("rabbitmq.properties");
-        properties.load(inputStream);
-        inputStream.close();
-        System.out.println(properties.getProperty("user.nick"));
+        System.out.println("Welcome "+nick+" in Rabbit Chat");
         while(true){
             String message=scanner.nextLine();
+            if(message.equals(":q"))
+                System.exit(0);
             Message toSend=new Message(nick, message);
-            chat.send(toSend);
+            rabbit.send(toSend);
         }
     }
 }
